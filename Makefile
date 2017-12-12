@@ -1,5 +1,5 @@
 
-SUBDIRS = demo so
+SUBDIRS = demo
 
 all: ${SUBDIRS}
 all: TARGET =
