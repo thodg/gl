@@ -1,14 +1,14 @@
 
-PROGRAM =
+PROGRAM = gldemo
 SRCDIR = ../..
 
 CPPFLAGS =
 CFLAGS = -O0 -ggdb -W -Wall -Werror
 
 LDFLAGS =
-LIBS =
+LIBS = -lglfw -lGL
 HEADERS =
-OBJECTS =
+OBJECTS = gldemo.o
 
 SRC = ${HEADERS} ${OBJECTS:%.o=%.c}
 
