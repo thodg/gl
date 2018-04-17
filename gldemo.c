@@ -1,16 +1,6 @@
 
 #include <stdio.h>
-#include <GL/gl.h>
 #include <GLFW/glfw3.h>
-
-GLFWwindow *g_wnd;
-char g_close = 0;
-
-void close (GLFWwindow *wnd)
-{
-  (void) wnd;
-  g_close = -1;
-}
 
 void size (GLFWwindow *wnd, int w, int h)
 {
@@ -21,36 +11,34 @@ void size (GLFWwindow *wnd, int w, int h)
 
 void draw ()
 {
-  glClear(GL_COLOR);
+  glClear(GL_COLOR_BUFFER_BIT);
 }
 
-int create_window (char full)
+GLFWwindow * create_window (char full)
 {
   GLFWmonitor *m = NULL;
+  GLFWwindow *wnd;
   if (full)
     m = glfwGetPrimaryMonitor();
-  if (!(g_wnd = glfwCreateWindow(800, 600, "gldemo", m, NULL)))
-    return -1;
-  printf("g_wnd %p\n", g_wnd);
-  glfwSetWindowCloseCallback(g_wnd, close);
-  glfwSetFramebufferSizeCallback(g_wnd, size);
-  return 0;
+  if (!(wnd = glfwCreateWindow(800, 600, "gldemo", m, NULL)))
+    return 0;
+  printf("wnd %p\n", wnd);
+  glfwSetFramebufferSizeCallback(wnd, size);
+  return wnd;
 }
 
-int main (int argc, char *argv[])
+int main ()
 {
-  (void) argc;
-  (void) argv;
-  if (glfwInit() == GLFW_TRUE) {
-    if (create_window(0))
-      return 1;
-    while (!g_close) {
-      glfwPollEvents();
-      draw();
-    }
-    glfwDestroyWindow(g_wnd);
-    glfwTerminate();
-    return 0;
+  GLFWwindow *wnd;
+  if (glfwInit() != GLFW_TRUE)
+    return 1;
+  if (!(wnd = create_window(0)))
+    return 1;
+  while (!glfwWindowShouldClose(wnd)) {
+    draw();
+    glfwSwapBuffers(wnd);
+    glfwPollEvents();
   }
-  return 1;
+  glfwTerminate();
+  return 0;
 }
